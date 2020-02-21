@@ -2,8 +2,14 @@ class CocktailsController < ApplicationController
 
   before_action :set_cocktail, only: [:show, :edit]
 
+
+
   def index
-    @cocktails = Cocktail.all
+    if params[:search] && params[:search][:query] != ""
+      @cocktails = Cocktail.all.select { |cocktail| cocktail.name.downcase == params[:search][:query].downcase }
+    else
+      @cocktails = Cocktail.all
+    end
   end
 
   def show
